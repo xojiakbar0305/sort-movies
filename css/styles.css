@@ -1,0 +1,10 @@
+body {
+  background-color: violet;
+}
+.movie-item {
+  width: 523px;
+}
+.movie-img-youtube {
+  width: 100%;
+  object-fit: contain;
+}

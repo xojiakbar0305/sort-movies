@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="./site-code.ico">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>js</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="./css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+  <h1 class="sr-only">kinolar</h1>
+  <div class="container mt-4">
+    <h2 class="h3">Kinolar</h2>
+    <form class="movies-search-form d-flex aligin-items-center" action="#" method="GET">
+      <input class="movies-search-input form-control mr-3" type="search" name="search" placeholder="Search" aria-label="movie search input">
+      <select class="search-select form-control py-1 mr-3" name="select" id="selectedCategories" required>
+        <option disabled value selected>Categories</option>
+      </select>
+      <select class="movie-rating-select form-control mr-3" name="select" id="selectedRating" required>
+        <option disabled value selected>Sort Movies</option>
+        <option value="alphabetical">Alphabetical</option>
+        <option value="rating">IMDb Rating</option>
+        <option value="release_date">Release Year</option>
+        <option value="runtime">Runtime</option>
+      </select>
+      <button class="movies-search-button btn btn-info">search</button>
+    </form>
+    <ul class="movies-list d-flex flex-wrap p-0 mt-5">
+
+    </ul>
+
+    <template id="moviesTemplate">
+      <li class="movie-item list-group-item mb-4 border mx-3 bg-light">
+        <img class="movie-img-youtube mb-3" src="" alt="movie img" width="400" height="400">
+        <h3 class="movie-title h5 text-info">kino title</h3>
+        <span class="movie-year text-warning">2010</span>
+        <p class="movie-categories"></p>
+        <a class="btn btn-primary mb-2 summary-button" data-toggle="collapse" href="" role="button" aria-expanded="false"
+          aria-controls="collapseExample">
+          Summary
+        </a>
+        <div class="summary-box collapse" id="">
+          <div class="card-body">
+            <p class="movie-summar text-success">lorem, porem</p>
+          </div>
+        </div>
+        <div class="d-flex aligin items-center">
+          <span class="material-icons text-danger mr-2">
+            ondemand_video
+          </span>
+          <a class="movie-youtube d-inline-block mb-2" href="" target="_blank"></a>
+        </div>
+        <div class="d-flex aligin-items-center">
+          <span class="material-icons text-warning mr-2">
+            thumbs_up_down
+          </span>
+          <p class="movie-rating"></p>
+        </div>
+        <div class="d-flex aligin-items-center">
+          <span class="material-icons text-secondary mr-2">
+            schedule
+          </span>
+          <p class="movie-runtime"></p>
+        </div>
+      </li>
+    </template>
+  </div>
+  <script src="./js/jquery.min.js"></script>
+  <script src="./js/bootstrap.bundle.min.js"></script>
+  <script src="./js/utils.js"></script>
+  <script src="./js/movies.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
