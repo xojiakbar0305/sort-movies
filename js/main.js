@@ -56,7 +56,7 @@ var elCategorieSelect = $_('.search-select', elSearchForm);
 
 compactMovies.forEach(function (movie) {
   movie.categories.forEach(function (categorie) {
-    if (!(newCategorieArray.includes(categorie))) {
+    if (!newCategorieArray.includes(categorie)) {
       newCategorieArray.push(categorie);
     } 
   });
