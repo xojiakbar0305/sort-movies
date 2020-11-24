@@ -51,26 +51,47 @@ var renderMovies = function (movies) {
 };
 
 //option
-var newCategorieArray = ['All']
 var elCategorieSelect = $_('.search-select', elSearchForm);
+var funcCategories = function() {
+  var newCategorieArray = ['All']
+  compactMovies.forEach(function (movie) {
 
-compactMovies.forEach(function (movie) {
-  movie.categories.forEach(function (categorie) {
-    if (!newCategorieArray.includes(categorie)) {
-      newCategorieArray.push(categorie);
-    } 
+    movie.categories.forEach(function (categorie) {
+      if (!newCategorieArray.includes(categorie)) {
+        newCategorieArray.push(categorie);
+      }
+    });
   });
-});
 
-newCategorieArray.forEach(function(categorie) {
-  var elNewOption = createElement('option', '', categorie);
-  elNewOption.value = categorie;
-  elCategorieSelect.appendChild(elNewOption); 
-})
+  newCategorieArray.sort();
+  var elOptionFragment = document.createDocumentFragment();
+  newCategorieArray.forEach(function (categorie) {
+    var elNewOption = createElement('option', '', categorie);
+    elNewOption.value = categorie;
+    elOptionFragment.appendChild(elNewOption);
+  });
+
+  elCategorieSelect.appendChild(elOptionFragment);
+
+};
+funcCategories();
 // rating select
 var elRatingSelect = $_('.movie-rating-select', elSearchForm);
+var elRatingFunc = function() {
+  var ratingArray = ['Alphabetical', 'IMDb Rating', 'Release Year', 'Runtime',]
 
-
+  ratingArray.sort();
+  var elRatingFragment = document.createDocumentFragment();
+  ratingArray.forEach(function(rating) {
+    var elNewOption = createElement('option', '', rating);
+    elNewOption.value = rating;
+    elRatingFragment.appendChild(elNewOption);
+  });
+  
+  elRatingSelect.appendChild(elRatingFragment);
+  
+};
+elRatingFunc();
 //qidruv
 var searchForMovies = function (evt) {
   evt.preventDefault();
