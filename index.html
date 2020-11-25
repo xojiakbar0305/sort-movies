@@ -15,11 +15,11 @@
     <h2 class="h3">Kinolar</h2>
     <form class="movies-search-form d-flex aligin-items-center" action="https://echo.htmlacademy.ru" method="GET">
       <input class="movies-search-input form-control mr-3" type="search" name="search" placeholder="Search" aria-label="movie search input">
-      <select class="search-select form-control py-1 mr-3" name="select" id="selectedCategories" required>
-        <option disabled value selected>Categories</option>
+      <select class="search-select form-control py-1 mr-3" name="select" id="selectedCategories">
+        <option value="all">All</option>
       </select>
-      <select class="movie-rating-select form-control mr-3" name="select" id="selectedRating" required>
-        <option disabled value selected>Sort Movies</option>
+      <select class="movie-rating-select form-control mr-3" name="select" id="selectedRating">
+        
       </select>
       <button class="movies-search-button btn btn-info" type="submit">search</button>
     </form>
@@ -27,16 +27,32 @@
 
     </ul>
 
+     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-info">
+        <div class="modal-header">
+          <h5 class="modal-title text-white" id="movie-title"></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span class="text-white" aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="movie-description my-1 text-center text-white">
+            
+          </div>
+            <div class="movie-language text-white"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
     <template id="moviesTemplate">
       <li class="movie-item list-group-item mb-4 border mx-3 bg-light">
         <img class="movie-img-youtube mb-3" src="" alt="movie img" width="400" height="400">
         <h3 class="movie-title h5 text-info">kino title</h3>
         <span class="movie-year text-warning">2010</span>
         <p class="movie-categories"></p>
-        <a class="btn btn-primary mb-2 summary-button" data-toggle="collapse" href="" role="button" aria-expanded="false"
-          aria-controls="collapseExample">
-          Summary
-        </a>
         <div class="summary-box collapse" id="">
           <div class="card-body">
             <p class="movie-summar text-success">lorem, porem</p>
@@ -60,6 +76,9 @@
           </span>
           <p class="movie-runtime"></p>
         </div>
+        <button type="button" class="btn btn-primary js-open-modal-btn" data-toggle="modal" data-target="#exampleModal">
+        More info
+      </button>
       </li>
     </template>
   </div>

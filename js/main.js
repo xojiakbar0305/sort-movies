@@ -21,17 +21,14 @@ var elSearchInput = $_('.movies-search-input', elSearchForm);
 var createMoviesElement = function (movie) {
   var cloneMovies = elMoviesTemlate.cloneNode(true);
 
-  $_('.summary-button', cloneMovies).href = `#${movie.imdbId}`;
-  $_('.summary-box', cloneMovies).id = movie.imdbId;
-
+  $_('.movie-item', cloneMovies).dataset.imdbId = movie.imdbId;
   $_('.movie-title', cloneMovies).textContent = movie.title;
   $_('.movie-img-youtube', cloneMovies).src = movie.image;
   $_('.movie-year', cloneMovies).textContent = movie.year;
-  $_('.movie-summar', cloneMovies).textContent = movie.summary;
   $_('.movie-categories', cloneMovies).textContent = movie.categories.join(', ');
   $_('.movie-youtube', cloneMovies).textContent = `Watch List`;
   $_('.movie-youtube', cloneMovies).href = `https://www.youtube.com/watch?v=${movie.youtubeId}`;
-  $_('.movie-rating', cloneMovies).textContent = `Movie Rating: ${movie.imdbRating}`;
+  $_('.movie-rating', cloneMovies).textContent = movie.imdbRating;
   $_('.movie-runtime', cloneMovies).textContent = movie.runTime;
 
   return cloneMovies;
@@ -78,13 +75,51 @@ funcCategories();
 // rating select
 var elRatingSelect = $_('.movie-rating-select', elSearchForm);
 var elRatingFunc = function() {
-  var ratingArray = ['Alphabetical', 'IMDb Rating', 'Release Year', 'Runtime',]
+  var sortArray = [
+  {
+    name:"All",
+    sort:"all"
+  },
+  {
+    name:"IMdB rating higher",
+    sort:"IMdBRH"
+  },
+  {
+    name:"IMdB rating lower",
+    sort:"IMdBRL"
+  },
+  {
+    name:"Time Up",
+    sort:"timeup"
+  },
+  {
+    name:"Time Down",
+    sort:"timedown"
+  },
+  {
+    name:"Year up",
+    sort:"yearup"
+  },
+  {
+    name:"Year Down",
+    sort:"yeardown"
+  },
+  {
+    name:"A-Z",
+    sort:"az"
+  },
+  {
+    name:"Z-A",
+    sort:"za"
+  }
+];
 
-  ratingArray.sort();
+  sortArray.sort();
   var elRatingFragment = document.createDocumentFragment();
-  ratingArray.forEach(function(rating) {
+  sortArray.forEach(function(rating) {
     var elNewOption = createElement('option', '', rating);
-    elNewOption.value = rating;
+    elNewOption.value = rating.sort;
+    elNewOption.textContent = rating.name;
     elRatingFragment.appendChild(elNewOption);
   });
   
@@ -116,36 +151,74 @@ var searchForMovies = function (evt) {
     elMoviesBox.innerHTML = '';
 
     var checkTitle = movie.title.match(searchQuery);
-    var checkCategorie = categoriesValue === 'All' || movie.categories.includes(categoriesValue);
+    var checkCategorie = categoriesValue === 'all' || movie.categories.includes(categoriesValue);
   
     return (checkTitle && checkCategorie);
 
   });
   //sortlash
-  if (elRatingSelect.value === 'alphabetical') {
+  if (elRatingSelect.value === 'yeardown') {
     searchResult.sort(function (a, b) {
-      return b.title - a.title;
+      return a.year - b.year;
     })
   }
 
-  else if (elRatingSelect.value === 'rating') {
-    searchResult.sort(function (a, b) {
-      return b.imdbRating - a.imdbRating;
+  else if (elRatingSelect.value === 'yearup') {
+    searchResult.sort(function (b, a) {
+      return a.year - b.year;
     });
   }
 
-  else if (elRatingSelect.value === 'release_date') {
-    searchResult.sort(function (a, b) {
-      return b.year - a.year;
+  else if (elRatingSelect.value === 'timeup') {
+    searchResult.sort(function (b, a) {
+      return a.runTime - b.runTime;
     });
   }
 
-  else {
+  else if (elRatingSelect.value === 'timedown') {
     searchResult.sort(function (a, b) {
-      return b.runTime - a.runTime;
+      return a.runTime - b.runTime;
+    }); 
+  }
+
+  else if (elRatingSelect.value === 'IMdBRH') {
+    searchResult.sort(function (b, a) {
+      return a.imdbRating - b.imdbRating;
     });
   }
 
+  else if (elRatingSelect.value === 'IMdBRL') {
+    searchResult.sort(function (a, b) {
+      return a.imdbRating - b.imdbRating;
+    }); 
+  }
+  else if (elRatingSelect.value === 'az') {
+    searchResult.sort(function (a, b) {
+      if (a.title > b.title) {
+      return 1;
+    } else if (a.title < b.title) {
+      return -1;
+    }
+    return 0;
+    });
+  }
+
+  else if (elRatingSelect.value === 'za') {
+    searchResult.sort(function (b, a) {
+      if (a.title < b.title) {
+      return -1;
+    } else if (a.title > b.title) {
+      return 1;
+    }
+    return 0;
+    }); 
+  }
+
+  else if(elRatingSelect.value === "all"){
+    searchResult.sort(function(a, b){
+      return a.id - b.id;
+    });
+  }
   // yoq bolsa 
   if (!searchResult.length) {
     alert(`bunday kino yo'q`);
@@ -160,4 +233,20 @@ var searchForMovies = function (evt) {
 // renderMovies(compactMovies)
 
 //submit
-elSearchForm.addEventListener('submit', searchForMovies)
+elSearchForm.addEventListener('submit', searchForMovies);
+
+elMoviesBox .addEventListener('click', (evt) => {
+  if (evt.target.matches('.js-open-modal-btn')) {
+    var elParentLi = evt.target.closest('.movie-item');
+
+    var moreInfo = compactMovies.find(function (movie) {
+      return movie.imdbId === elParentLi.dataset.imdbId;
+    });
+
+    var setModal = function (array) {
+      $_('.modal-title').textContent = array.title;
+      $_('.movie-description').textContent = `Summary: ${array.summary}`;
+    }
+    setModal(moreInfo);
+  }
+});
