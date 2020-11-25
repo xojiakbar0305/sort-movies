@@ -235,18 +235,15 @@ var searchForMovies = function (evt) {
 //submit
 elSearchForm.addEventListener('submit', searchForMovies);
 
-elMoviesBox .addEventListener('click', (evt) => {
+elMoviesBox.addEventListener('click', (evt) => {
   if (evt.target.matches('.js-open-modal-btn')) {
     var elParentLi = evt.target.closest('.movie-item');
 
     var moreInfo = compactMovies.find(function (movie) {
-      return movie.imdbId === elParentLi.dataset.imdbId;
+      return elParentLi.dataset.imdbId === movie.imdbId;
     });
 
-    var setModal = function (array) {
-      $_('.modal-title').textContent = array.title;
-      $_('.movie-description').textContent = `Summary: ${array.summary}`;
-    }
-    setModal(moreInfo);
+    $_('.modal-title').textContent = moreInfo.title;
+    $_('.movie-description').textContent = `Summary: ${moreInfo.summary}`;
   }
 });
