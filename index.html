@@ -12,38 +12,50 @@
 <body>
   <h1 class="sr-only">kinolar</h1>
   <div class="container mt-4">
-    <h2 class="h3">Kinolar</h2>
-    <form class="movies-search-form d-flex aligin-items-center" action="https://echo.htmlacademy.ru" method="GET">
-      <input class="movies-search-input form-control mr-3" type="search" name="search" placeholder="Search" aria-label="movie search input">
-      <select class="search-select form-control py-1 mr-3" name="select" id="selectedCategories">
-        <option value="all">All</option>
-      </select>
-      <select class="movie-rating-select form-control mr-3" name="select" id="selectedRating">
+    <div class="row">
+      <div class="col-8 border-right">
+        <h2 class="h3">Kinolar</h2>
+        <form class="movies-search-form d-flex aligin-items-center" action="https://echo.htmlacademy.ru" method="GET">
+          <input class="movies-search-input form-control mr-3" type="search" name="search" placeholder="Search"
+            aria-label="movie search input">
+          <select class="search-select form-control py-1 mr-3" name="select" id="selectedCategories">
+            <option value="all">All</option>
+          </select>
+          <select class="movie-rating-select form-control mr-3" name="select" id="selectedRating">
         
-      </select>
-      <button class="movies-search-button btn btn-info" type="submit">search</button>
-    </form>
-    <ul class="movies-list d-flex flex-wrap p-0 mt-5">
+          </select>
+          <button class="movies-search-button btn btn-info" type="submit">search</button>
+        </form>
+        <ul class="movies-list d-flex flex-wrap p-0 mt-5">
+        </ul>
+      </div>
 
-    </ul>
+      <div class="col-4 mt-5">
+        <h2>Bookmark Movies</h2>
+        <ul class="bookmark-list p-0">
+          
+        </ul>
+      </div>
+    </div>
 
-     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content bg-info">
-        <div class="modal-header">
-          <h5 class="modal-title text-white" id="movie-title"></h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span class="text-white" aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="movie-description my-1 text-center text-white">
-            
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content bg-info">
+          <div class="modal-header">
+            <h5 class="modal-title text-white" id="movie-title"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span class="text-white" aria-hidden="true">&times;</span>
+            </button>
           </div>
+          <div class="modal-body">
+            <div class="movie-description my-1 text-center text-white">
+    
+            </div>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 
     <template id="moviesTemplate">
@@ -75,11 +87,24 @@
           </span>
           <p class="movie-runtime"></p>
         </div>
-        <button type="button" class="btn btn-primary js-open-modal-btn" data-toggle="modal" data-target="#exampleModal">
-        More info
-      </button>
+        <div class="d-flex">
+          <button type="button" class="btn btn-primary js-open-modal-btn" data-toggle="modal" data-target="#exampleModal">
+            More info
+          </button>
+          <button class="add-bookmark-button btn btn-success ml-3">bookmark</button>
+        </div>
       </li>
     </template>
+
+    <!-- bookmark template -->
+    <template id="bookmark-template">
+      <li class="bookmark-item list-group-item">
+        <h4 class="h5 bookmark-title">title</h4>
+        <button class="bookmark-remove-button btn btn-danger btn-sm py-0 d-flex">
+          <span class="span-bookmark material-icons">delete_forever</span>
+        </button>
+      </li>
+    </template> 
   </div>
   <script src="./js/jquery.min.js"></script>
   <script src="./js/bootstrap.bundle.min.js"></script>

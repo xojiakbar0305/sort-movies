@@ -1,20 +1,11 @@
-var compactMovies = movies.map(function(movie, i) {
-  return {
-    id: i + 1,
-    title: movie.Title.toString(),
-    image: `http://i3.ytimg.com/vi/${movie.ytid}/hqdefault.jpg`,
-    year: movie.movie_year,
-    categories: movie.Categories.split('|'),
-    summary: movie.summary,
-    imdbRating: movie.imdb_rating,
-    runTime: movie.runtime,
-    youtubeId: movie.ytid,
-    imdbId: movie.imdb_id,
-  }
-});
+var bookmarkArray = JSON.parse(localStorage.getItem('bookmark')) || [];
 
 var elMoviesBox = $_('.movies-list');
+var elBookmarkList = $_('.bookmark-list');
+
 var elMoviesTemlate = $_('#moviesTemplate').content;
+var elBookmarkTempalte = $_('#bookmark-template').content;
+
 var elSearchForm = $_('.movies-search-form');
 var elSearchInput = $_('.movies-search-input', elSearchForm);
 
@@ -230,11 +221,39 @@ var searchForMovies = function (evt) {
   renderMovies(searchResult);
 }
 
-// renderMovies(compactMovies)
+renderMovies(compactMovies.slice(0, 50));
 
 //submit
 elSearchForm.addEventListener('submit', searchForMovies);
 
+//bookmarklardan clone olish
+var renderBookmark = () => {
+
+  var elFragmentBookmark = document.createDocumentFragment();
+
+  bookmarkArray.forEach(movie => {
+
+    var elNewBookmark = elBookmarkTempalte.cloneNode(true);
+    $_('.bookmark-title', elNewBookmark).textContent = movie.title;
+    $_('.bookmark-remove-button', elNewBookmark).dataset.imdbId = movie.imdbId;
+    $_('.span-bookmark', elNewBookmark).dataset.imdbId = movie.imdbId;
+
+    elFragmentBookmark.appendChild(elNewBookmark)
+  });
+  elBookmarkList.innerHTML = ''
+  elBookmarkList.appendChild(elFragmentBookmark);
+};
+renderBookmark();
+//bor yoqligini tekshirib oladi bolsa qoshmaydi bolmasa qoshadi
+var bookmarkMovie = movie => {
+
+  bookmarkArray.push(movie);
+  
+
+  renderBookmark();
+};
+
+//bookmarklarga button bosilganda shung mos idli kinoni bookmark listga qoshadi va madal ham chiqadi
 elMoviesBox.addEventListener('click', (evt) => {
   if (evt.target.matches('.js-open-modal-btn')) {
     var elParentLi = evt.target.closest('.movie-item');
@@ -245,5 +264,37 @@ elMoviesBox.addEventListener('click', (evt) => {
 
     $_('.modal-title').textContent = moreInfo.title;
     $_('.movie-description').textContent = `Summary: ${moreInfo.summary}`;
+  } else if (evt.target.matches('.add-bookmark-button')) {
+
+    var elParent = evt.target.closest('.movie-item').dataset.imdbId;
+    let foundMovies = compactMovies.find(movie => movie.imdbId === elParent);
+
+    var isBookmark = bookmarkArray.find(movie => {
+      return movie.imdbId === foundMovies.imdbId;
+    });
+
+    if (!isBookmark) {
+      bookmarkMovie(foundMovies);
+
+      localStorage.setItem('bookmark', JSON.stringify(bookmarkArray));
+    };
+    renderBookmark(JSON.parse(localStorage.getItem('bookmark')));
+  };
+});
+
+//remove bookmark
+elBookmarkList.addEventListener('click', evt => {
+  if (evt.target.matches('.bookmark-remove-button, .span-bookmark')) {
+    var movieId = evt.target.dataset.imdbId;
+
+    var kinoIndex = bookmarkArray.findIndex(function(movie) {
+      return movie.imdbId === movieId;
+    });
+    
+    bookmarkArray.splice(kinoIndex, 1);
+
+    localStorage.setItem('bookmark', JSON.stringify(bookmarkArray));
+
+    renderBookmark(); 
   }
 });

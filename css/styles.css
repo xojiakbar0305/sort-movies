@@ -2,9 +2,10 @@ body {
   background-color: violet;
 }
 .movie-item {
-  width: 523px;
+  width: 330px;
 }
 .movie-img-youtube {
   width: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  height: 200px;
 }
